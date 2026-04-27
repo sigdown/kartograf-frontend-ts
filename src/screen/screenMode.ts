@@ -1,17 +1,17 @@
 export type ScreenMode =
 
-  | 'home'
+| 'home'
 
-  | 'guest-map'
+| 'guest-map'
 
-  | 'account'
+| 'account'
 
-  | 'admin'
+| 'admin'
 
-  | 'about'
+| 'about'
 
-  | 'sources'
+| 'sources'
 
-  | 'licenses'
+| 'licenses'
 
-  | 'feedback'
+| 'feedback'
