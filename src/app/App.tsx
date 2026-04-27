@@ -1,6 +1,6 @@
 import { AppScreens } from './AppScreens'
 import { useAppController } from './useAppController'
-import '../App.css'
+import '../styles/index.css'
 
 export default function App() {
   const controller = useAppController()

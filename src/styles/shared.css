@@ -1,0 +1,238 @@
+.landing-page,
+.admin-screen,
+.account-screen {
+  min-height: 100vh;
+  color: var(--color-text);
+}
+
+.landing-page {
+  display: flex;
+  flex-direction: column;
+  --color-bg: #F6F1E8;
+  --color-surface: #FFFDF8;
+  --color-surface-muted: #EFE7D8;
+  --color-text: #1F2933;
+  --color-text-muted: #66705F;
+  --color-border: #D8CDBB;
+  --color-primary: #234E70;
+  --color-primary-hover: #173B56;
+  --color-accent: #B7791F;
+  --color-success: #4F7C52;
+  --color-warning: #D39B3D;
+  --color-danger: #B42318;
+
+  background: linear-gradient(180deg, var(--color-bg) 0%, #F2ECE0 100%);
+}
+
+.admin-screen,
+.account-screen {
+  background: linear-gradient(180deg, var(--color-bg) 0%, #F2ECE0 100%);
+}
+
+.landing-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 12px var(--space-page-x);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.landing-header__brand,
+.account-shell,
+.account-shell__top,
+.admin-nav__top,
+.admin-debug,
+.admin-subsection__top {
+  display: grid;
+  gap: 4px;
+}
+
+.landing-header__actions,
+.auth-form__actions,
+.account-actions,
+.account-point-card__actions,
+.catalog-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.landing-header__logo,
+.landing-hero__title,
+.entry-card__title,
+.auth-placeholder__title,
+.account-shell__title,
+.account-card__title,
+.admin-nav__title,
+.admin-card__title,
+.admin-subsection__title,
+.points-panel__title,
+.sidebar__title,
+.modal-card__title,
+.catalog-card__title {
+  font-family: var(--font-display);
+}
+
+.landing-header__logo {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.landing-header__logo-link {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.landing-header__note,
+.landing-header__user,
+.landing-header__user-role,
+.auth-field__label,
+.catalog-search__label,
+.overlay-control__title,
+.map-context-menu__coords,
+.catalog-card__preview,
+.catalog-card__description,
+.account-point-card__summary p,
+.point-row-card p {
+  color: var(--color-text-muted);
+}
+
+.landing-header__note {
+  font-size: 12px;
+}
+
+.landing-header__user {
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  max-width: 280px;
+  padding: 0 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: color-mix(in srgb, var(--color-surface) 90%, var(--color-surface-muted));
+  color: var(--color-text);
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+
+.landing-header__status-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--color-secondary);
+  box-shadow: 0 0 0 2px var(--secondary-soft);
+}
+
+.landing-header__user-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.landing-header__user-role {
+  flex: 0 0 auto;
+  padding: 2px 6px;
+  border-radius: var(--radius-badge);
+  background: color-mix(in srgb, var(--color-surface-muted) 70%, var(--color-surface));
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.landing-header__ghost,
+.back-link,
+.entry-card__button,
+.account-action-button,
+.auth-tab,
+.admin-menu__item,
+.points-panel__close,
+.basemap-switcher__button {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  padding: 10px 14px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition:
+    border-color 0.24s var(--motion-gentle),
+    background-color 0.24s var(--motion-gentle),
+    color 0.24s var(--motion-gentle),
+    box-shadow 0.24s var(--motion-gentle),
+    transform 0.24s var(--motion-gentle);
+}
+
+.landing-header__ghost {
+  border: 0;
+  border-radius: 0;
+  padding: 2px 0;
+  background: transparent;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.landing-header__ghost--primary {
+  color: var(--color-text);
+}
+
+.landing-header__ghost--subtle {
+  color: var(--color-text-muted);
+}
+
+.landing-header__ghost--danger {
+  color: color-mix(in srgb, var(--color-danger) 72%, var(--color-text-muted));
+  background: transparent;
+}
+
+.landing-header__ghost:hover,
+.back-link:hover,
+.entry-card__button:hover,
+.account-action-button:hover,
+.auth-tab:hover,
+.admin-menu__item:hover,
+.points-panel__close:hover,
+.basemap-switcher__button:hover {
+  border-color: color-mix(in srgb, var(--color-border) 72%, var(--color-text-muted));
+  background: var(--color-surface-muted);
+}
+
+.landing-header__ghost:hover {
+  border-color: transparent;
+  background: transparent;
+  color: var(--color-text);
+}
+
+.landing-header__ghost--primary:hover {
+  border-color: transparent;
+  background: transparent;
+  color: var(--color-text);
+}
+
+
+.landing-header__ghost:focus-visible,
+.back-link:focus-visible,
+.entry-card__button:focus-visible,
+.account-action-button:focus-visible,
+.auth-tab:focus-visible,
+.admin-menu__item:focus-visible,
+.points-panel-toggle:focus-visible,
+.points-panel__close:focus-visible,
+.basemap-switcher__button:focus-visible,
+.catalog-card__summary:focus-visible,
+.point-row-card:focus-visible,
+.account-point-card__summary:focus-visible,
+.map-point-marker:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}

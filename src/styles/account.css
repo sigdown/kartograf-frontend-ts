@@ -1,0 +1,90 @@
+.account-screen {
+  padding: 24px var(--space-page-x);
+}
+
+.account-shell--narrow {
+  max-width: var(--container-md);
+  margin: 0 auto;
+}
+
+.account-shell__top {
+  gap: 10px;
+}
+
+.account-shell__title {
+  font-size: 34px;
+  line-height: 1.06;
+}
+
+.account-card__title {
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.account-card--form {
+  max-width: 100%;
+}
+
+.account-card--form:first-of-type {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-surface) 96%, var(--color-surface-muted)) 0%, color-mix(in srgb, var(--color-surface) 92%, var(--color-surface-muted)) 100%);
+  box-shadow: 0 6px 16px rgba(31, 41, 51, 0.05);
+}
+
+.account-card--form .account-details {
+  margin-top: 6px;
+}
+
+.account-card--form .account-details__row {
+  padding-top: 12px;
+}
+
+.account-danger-zone {
+  border-color: color-mix(in srgb, var(--color-danger) 28%, var(--color-border));
+  background: color-mix(in srgb, var(--danger-soft) 42%, var(--color-surface));
+}
+
+.account-empty-state {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border: 1px dashed color-mix(in srgb, var(--color-border) 78%, transparent);
+  border-radius: var(--radius-card);
+  background: color-mix(in srgb, var(--color-surface) 84%, transparent);
+}
+
+.account-details,
+.catalog-card__details {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.account-details__row,
+.catalog-card__detail {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+}
+
+.account-details__row dt,
+.account-details__row dd,
+.catalog-card__detail dt,
+.catalog-card__detail dd {
+  margin: 0;
+  font-size: 14px;
+}
+
+.account-details__row dt,
+.catalog-card__detail dt {
+  color: var(--color-text-muted);
+}
+
+.account-details__row dd,
+.catalog-card__detail dd {
+  color: var(--color-text);
+  font-weight: 600;
+  word-break: break-word;
+}

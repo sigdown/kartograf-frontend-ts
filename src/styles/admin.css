@@ -1,0 +1,153 @@
+.admin-shell {
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.admin-nav {
+  padding: 20px;
+  border-right: 1px solid var(--color-border);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-surface) 92%, transparent) 0%, color-mix(in srgb, var(--color-surface-muted) 72%, var(--color-surface)) 100%);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.02);
+}
+
+.admin-nav__top {
+  gap: 10px;
+}
+
+.admin-nav__title,
+.admin-card__title {
+  font-size: 28px;
+  line-height: 1.08;
+}
+
+.admin-menu {
+  display: grid;
+  gap: 8px;
+  margin-top: 26px;
+}
+
+.admin-menu__item {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+}
+
+.admin-menu__item.is-active {
+  border-color: color-mix(in srgb, var(--color-accent) 32%, var(--color-border));
+  background: color-mix(in srgb, var(--accent-soft) 44%, var(--color-surface));
+  color: var(--color-primary);
+  box-shadow: inset 3px 0 0 var(--color-accent);
+}
+
+.admin-content {
+  display: flex;
+  justify-content: center;
+  padding: 24px var(--space-page-x);
+}
+
+.admin-content > * {
+  width: min(100%, var(--container-lg));
+}
+
+.admin-map-preview,
+.sidebar__hint-box,
+.overlay-control,
+.admin-subsection {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: color-mix(in srgb, var(--color-surface-muted) 74%, var(--color-surface));
+}
+
+.admin-map-preview__meta,
+.catalog-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.admin-map-preview__meta span,
+.catalog-card__year,
+.catalog-card__slug,
+.catalog-card__toggle {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 9px;
+  border-radius: 999px;
+}
+
+.admin-map-preview__meta span,
+.catalog-card__slug,
+.catalog-card__toggle {
+  background: color-mix(in srgb, var(--color-surface) 52%, var(--color-surface-muted));
+}
+
+.catalog-card__year {
+  background: var(--accent-soft);
+  color: var(--color-accent);
+  border: 1px solid rgba(183, 121, 31, 0.16);
+}
+
+.admin-map-preview__title {
+  margin: 0;
+  font-size: 18px;
+  color: var(--color-text);
+}
+
+.admin-status {
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-surface-muted) 68%, var(--color-surface));
+  color: var(--color-text);
+}
+
+.admin-status.is-success {
+  border-color: var(--color-success);
+  background: var(--success-soft);
+  color: var(--color-success);
+}
+
+.admin-status.is-error {
+  border-color: var(--color-danger);
+  background: var(--danger-soft);
+}
+
+.admin-debug__output {
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  color: var(--color-text);
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.admin-subsection {
+  padding: 16px;
+}
+
+.admin-subsection--danger {
+  border-color: var(--color-danger);
+  background: color-mix(in srgb, var(--danger-soft) 88%, var(--color-surface));
+}
+
+.admin-subsection__title {
+  margin: 4px 0 0;
+  font-size: 20px;
+  line-height: 1.1;
+  color: var(--color-text);
+}

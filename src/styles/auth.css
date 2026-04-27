@@ -1,0 +1,104 @@
+.auth-panel {
+  max-width: var(--container-lg);
+  margin: 0 auto;
+  padding: 0 var(--space-page-x) 32px;
+}
+
+.auth-overlay-backdrop {
+  z-index: 20;
+}
+
+.auth-overlay {
+  width: min(100%, var(--container-sm));
+}
+
+.auth-overlay .auth-panel {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.auth-overlay .auth-panel__box {
+  box-shadow: var(--surface-shadow-strong);
+}
+
+.auth-panel__box {
+  max-width: var(--container-sm);
+}
+
+.auth-panel__tabs {
+  display: inline-flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.auth-panel__error,
+.admin-status.is-error,
+.auth-panel__error-details {
+  color: var(--color-danger);
+}
+
+.auth-panel__error {
+  margin: 0;
+}
+
+.auth-panel__error-box {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px solid var(--color-danger);
+  border-radius: 12px;
+  background: var(--danger-soft);
+}
+
+.auth-panel__error-details {
+  margin: 0;
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--color-surface);
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.auth-form,
+.admin-form,
+.admin-subsection,
+.account-shell {
+  display: grid;
+  gap: 14px;
+}
+
+.auth-form {
+  margin-top: 20px;
+}
+
+.auth-field {
+  display: grid;
+  gap: 6px;
+}
+
+.auth-field__input {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  padding: 11px 12px;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.auth-field__input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.auth-field__input--textarea {
+  resize: vertical;
+}
+
+.auth-field__input:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 1px;
+  border-color: var(--color-primary);
+}

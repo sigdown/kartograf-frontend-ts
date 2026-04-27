@@ -47,7 +47,7 @@ export const defaultSiteContent: SiteContent = {
       eyebrow: 'Администрирование',
       title: 'Управление картами',
       text: 'Загрузка новых архивов, обновление метаданных и управление каталогом.',
-      primaryAction: 'Открыть админку',
+      primaryAction: 'Открыть панель',
     },
   },
   staticPages: {
