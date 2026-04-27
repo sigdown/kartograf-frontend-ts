@@ -1,0 +1,10 @@
+{
+  "appName": "Kartograf",
+  "tagline": "Топографический архив",
+  "contactEmail": "support@example.com",
+  "feedbackSubject": "Обратная связь Kartograf",
+  "copyright": "© 2026 Kartograf",
+  "home": {
+    "title": "Сравнивайте старые карты с современной подложкой."
+  }
+}
