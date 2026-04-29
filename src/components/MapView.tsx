@@ -38,6 +38,7 @@ const defaultZoom = 10
 const overlaySourceId = 'selected-map-overlay-source'
 const overlayLayerId = 'selected-map-overlay-layer'
 const defaultOverlayOpacity = 0.72
+const overlaySourceMaxZoom = 14
 
 function getPointKey(point: RemotePoint) {
   return point.id ?? `${point.name}:${point.lat}:${point.lon}`
@@ -84,6 +85,7 @@ function syncSelectedMapOverlay(
     type: 'raster',
     tiles: [buildOverlayTilesUrl(selectedMapSlug)],
     tileSize: 256,
+    maxzoom: overlaySourceMaxZoom,
   })
 
   map.addLayer({
@@ -93,6 +95,7 @@ function syncSelectedMapOverlay(
     paint: {
       'raster-opacity': selectedMapOpacity,
       'raster-fade-duration': 0,
+      'raster-resampling': 'linear',
     },
   })
 }
