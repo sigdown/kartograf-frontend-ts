@@ -131,6 +131,8 @@ export function MapView({
   const onViewportChangeRef = useRef(onViewportChange)
   const onPointFocusHandledRef = useRef(onPointFocusHandled)
   const onPointSelectRef = useRef(onPointSelect)
+  const overlaySyncRequestIdRef = useRef(0)
+  const overlaySyncCleanupRef = useRef<(() => void) | null>(null)
 
   useEffect(() => {
     onMapContextMenuRef.current = onMapContextMenu
@@ -155,6 +157,74 @@ export function MapView({
   useEffect(() => {
     onPointSelectRef.current = onPointSelect
   }, [onPointSelect])
+
+  function scheduleOverlaySync(
+    map: MapLibreMap,
+    options?: { waitForNextStyleEvent?: boolean },
+  ) {
+    overlaySyncRequestIdRef.current += 1
+    const requestId = overlaySyncRequestIdRef.current
+    const waitForNextStyleEvent = options?.waitForNextStyleEvent ?? false
+
+    overlaySyncCleanupRef.current?.()
+
+    let rafId: number | null = null
+    let styleEventReceived = !waitForNextStyleEvent
+
+    const cleanup = () => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId)
+        rafId = null
+      }
+      map.off('style.load', onStyleUpdate)
+      map.off('styledata', onStyleUpdate)
+      map.off('idle', onStyleUpdate)
+      if (overlaySyncCleanupRef.current === cleanup) {
+        overlaySyncCleanupRef.current = null
+      }
+    }
+
+    const trySync = () => {
+      if (overlaySyncRequestIdRef.current !== requestId) {
+        cleanup()
+        return
+      }
+
+      if (!styleEventReceived) {
+        return
+      }
+
+      if (map.isStyleLoaded()) {
+        syncSelectedMapOverlay(
+          map,
+          activeSelectedMapSlugRef.current,
+          activeSelectedMapOpacityRef.current,
+        )
+        cleanup()
+        return
+      }
+
+      if (rafId === null) {
+        rafId = requestAnimationFrame(() => {
+          rafId = null
+          trySync()
+        })
+      }
+    }
+
+    const onStyleUpdate = () => {
+      styleEventReceived = true
+      trySync()
+    }
+
+    map.on('style.load', onStyleUpdate)
+    map.on('styledata', onStyleUpdate)
+    map.on('idle', onStyleUpdate)
+    overlaySyncCleanupRef.current = cleanup
+    if (!waitForNextStyleEvent) {
+      trySync()
+    }
+  }
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) {
@@ -201,17 +271,13 @@ export function MapView({
         y: event.point.y,
       })
     })
-    map.once('style.load', () => {
-      syncSelectedMapOverlay(
-        map,
-        activeSelectedMapSlugRef.current,
-        activeSelectedMapOpacityRef.current,
-      )
-    })
+    scheduleOverlaySync(map)
 
     mapRef.current = map
 
     return () => {
+      overlaySyncRequestIdRef.current += 1
+      overlaySyncCleanupRef.current?.()
       container.removeEventListener('contextmenu', preventBrowserContextMenu)
       map.remove()
       mapRef.current = null
@@ -225,15 +291,9 @@ export function MapView({
       return
     }
 
-    map.once('style.load', () => {
-      syncSelectedMapOverlay(
-        map,
-        activeSelectedMapSlugRef.current,
-        activeSelectedMapOpacityRef.current,
-      )
-    })
     map.setStyle(getBasemapStyleUrl(basemap))
     activeBasemapRef.current = basemap
+    scheduleOverlaySync(map, { waitForNextStyleEvent: true })
   }, [basemap])
 
   useEffect(() => {
@@ -246,7 +306,7 @@ export function MapView({
       return
     }
 
-    syncSelectedMapOverlay(map, normalizedSlug, activeSelectedMapOpacityRef.current)
+    scheduleOverlaySync(map)
   }, [selectedMapSlug])
 
   useEffect(() => {
@@ -254,15 +314,16 @@ export function MapView({
 
     activeSelectedMapOpacityRef.current = selectedMapOpacity
 
-    if (!map || !map.isStyleLoaded() || !map.getLayer(overlayLayerId)) {
+    if (!map || !map.isStyleLoaded()) {
       return
     }
 
-    map.setPaintProperty(
-      overlayLayerId,
-      'raster-opacity',
-      selectedMapOpacity,
-    )
+    if (!map.getLayer(overlayLayerId)) {
+      scheduleOverlaySync(map)
+      return
+    }
+
+    map.setPaintProperty(overlayLayerId, 'raster-opacity', selectedMapOpacity)
   }, [selectedMapOpacity])
 
   useEffect(() => {
