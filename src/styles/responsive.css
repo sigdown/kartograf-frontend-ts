@@ -24,10 +24,6 @@
     padding-bottom: 10px;
   }
 
-  .app-shell--with-header {
-    height: calc(100vh - 146px);
-  }
-
   .landing-hero {
     padding-top: 32px;
     gap: 20px;

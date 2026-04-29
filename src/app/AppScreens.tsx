@@ -94,7 +94,7 @@ export function AppScreens({ controller }: AppScreensProps) {
       <Route
         path={routes.view}
         element={
-          <>
+          <div className="workspace-screen">
             {header}
             <MapWorkspacePage
               authSession={authSession}
@@ -135,7 +135,7 @@ export function AppScreens({ controller }: AppScreensProps) {
               handleUpdatePoint={handleUpdatePoint}
               handleDeletePoint={handleDeletePoint}
             />
-          </>
+          </div>
         }
       />
       <Route

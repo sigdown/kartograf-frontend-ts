@@ -1,13 +1,30 @@
+.workspace-screen {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.workspace-screen > .landing-header {
+  width: 100%;
+  max-width: none;
+  flex: 0 0 auto;
+  margin: 0;
+}
+
 .app-shell {
   position: relative;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: auto;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow: hidden;
   background: linear-gradient(180deg, var(--color-bg) 0%, #F2ECE0 100%);
 }
 
 .app-shell--with-header {
-  height: calc(100vh - 69px);
+  height: auto;
 }
 
 .map-view {
