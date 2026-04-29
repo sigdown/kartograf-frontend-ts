@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { getMapDownloadUrl, getMaps } from '../api/maps'
 import {
   createPoint,
@@ -9,11 +10,11 @@ import {
 import { clearAuthSession, loadAuthSession } from '../auth/session'
 import { useSiteContent } from '../content/siteContent'
 import {
-  isStaticPageId,
   loadScreenMode,
   saveScreenMode,
   type ScreenMode,
 } from '../screen/screenMode'
+import { pathToScreenMode, routes, screenModeToPath } from '../screen/routes'
 import type { AuthSession } from '../types/auth'
 import type { MapItem } from '../types/maps'
 import type { PointPayload, RemotePoint } from '../types/points'
@@ -34,31 +35,17 @@ import {
 } from '../workspace/utils/workspaceStorage'
 
 export function useAppController() {
+  const location = useLocation()
+  const navigate = useNavigate()
   const siteContent = useSiteContent()
   const [authSession, setAuthSession] = useState<AuthSession | null>(() =>
     loadAuthSession(),
   )
   const [workspace, setWorkspace] = useState(() => loadWorkspaceState())
-  const [screenMode, setScreenMode] = useState<ScreenMode>(() => {
+  const [isAuthOpen, setIsAuthOpen] = useState(() => {
     const persistedScreenMode = loadScreenMode()
 
-    if (persistedScreenMode === 'guest-map' || persistedScreenMode === 'auth') {
-      return persistedScreenMode
-    }
-
-    if (persistedScreenMode && isStaticPageId(persistedScreenMode)) {
-      return persistedScreenMode
-    }
-
-    if (persistedScreenMode === 'account' && authSession) {
-      return 'account'
-    }
-
-    if (persistedScreenMode === 'admin' && authSession?.user.role === 'ADMIN') {
-      return 'admin'
-    }
-
-    return 'home'
+    return persistedScreenMode === 'auth'
   })
   const [maps, setMaps] = useState<MapItem[]>([])
   const [isLoadingMaps, setIsLoadingMaps] = useState(true)
@@ -78,12 +65,26 @@ export function useAppController() {
   const [isSubmittingPoint, setIsSubmittingPoint] = useState(false)
 
   const isAdmin = authSession?.user.role === 'ADMIN'
+  const routeScreenMode = pathToScreenMode(location.pathname) ?? 'home'
+  const screenMode: ScreenMode =
+    isAuthOpen && routeScreenMode === 'home' ? 'auth' : routeScreenMode
   const effectiveScreenMode: ScreenMode =
     screenMode === 'account' && !authSession
       ? 'home'
       : screenMode === 'admin' && (!authSession || !isAdmin)
         ? 'home'
         : screenMode
+
+  function setScreenMode(mode: ScreenMode) {
+    if (mode === 'auth') {
+      setIsAuthOpen(true)
+      navigate(routes.home)
+      return
+    }
+
+    setIsAuthOpen(false)
+    navigate(screenModeToPath(mode))
+  }
 
   function handleLogout() {
     clearAuthSession()
@@ -94,6 +95,12 @@ export function useAppController() {
   useEffect(() => {
     saveWorkspaceState(workspace)
   }, [workspace])
+
+  useEffect(() => {
+    if (location.pathname !== routes.home && isAuthOpen) {
+      setIsAuthOpen(false)
+    }
+  }, [isAuthOpen, location.pathname])
 
   useEffect(() => {
     void refreshMaps()
