@@ -6,16 +6,22 @@ export type BasemapOption = {
   styleUrl: string
 }
 
+const defaultMapsBaseUrl = 'https://maps-fallback.invalid'
+const mapsBaseUrl =
+  (import.meta.env.VITE_MAPS_BASE_URL as string | undefined)?.trim() ||
+  defaultMapsBaseUrl
+const normalizedMapsBaseUrl = mapsBaseUrl.replace(/\/+$/, '')
+
 export const basemapOptions: BasemapOption[] = [
   {
     id: 'vector',
     label: 'Vector',
-    styleUrl: 'https://maps.kartograf.xyz/vector/style.json',
+    styleUrl: `${normalizedMapsBaseUrl}/vector/style.json`,
   },
   {
     id: 'hybrid',
     label: 'Hybrid',
-    styleUrl: 'https://maps.kartograf.xyz/hybrid/style.json',
+    styleUrl: `${normalizedMapsBaseUrl}/hybrid/style.json`,
   },
 ]
 

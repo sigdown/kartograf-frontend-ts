@@ -1,73 +1,89 @@
-# React + TypeScript + Vite
+## Обзор
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Kartograf - клиент-серверная система для наложения пользовательских и исторических карт поверх современной картографической подложки.
 
-Currently, two official plugins are available:
+Этот репозиторий содержит frontend-приложение (Vite + React + TypeScript) для пользовательского и административного сценариев.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Основные сценарии:
 
-## React Compiler
+- просмотр публичного каталога карт
+- открытие карты в рабочем пространстве
+- наложение overlay-тайлов на basemap
+- работа с пользовательскими точками на карте
+- авторизация и доступ к личному кабинету
+- административные действия по управлению картами
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Что есть в этом репозитории
 
-## Expanding the ESLint configuration
+Текущая зона ответственности frontend:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- рендер UI и маршрутов приложения
+- интеграция с backend API
+- отображение каталога и деталей карт
+- отображение и управление точками пользователя
+- работа с MapLibre-картой и overlay-слоями
+- UI для административных операций
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Настройка окружения
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Создайте локальный `.env` на основе примера:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cp .env.example .env
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Или вручную создайте файл `.env` со значениями:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```env
+VITE_API_BASE_URL=https://api.your-domain.ru
+VITE_MAPS_BASE_URL=https://maps.your-domain.ru
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Что используется:
+
+- `VITE_API_BASE_URL` - базовый URL backend API (axios client)
+- `VITE_MAPS_BASE_URL` - базовый URL карт (basemap style.json + overlay tiles)
+
+Важно:
+
+- frontend читает только переменные с префиксом `VITE_`
+- значения `VITE_*` вшиваются в сборку на этапе `npm run build`
+- секреты в `VITE_*` передавать нельзя
+- при отсутствии переменных используются технические fallback-домены `https://api-fallback.invalid` и `https://maps-fallback.invalid`
+
+## Локальная разработка
+
+Требования:
+
+- Node.js 20+
+- npm 10+
+
+Установка зависимостей:
+
+```bash
+npm install
+```
+
+Запуск dev-сервера:
+
+```bash
+npm run dev
+```
+
+По умолчанию приложение доступно на `http://localhost:5173`.
+
+## Сборка
+
+Production-сборка:
+
+```bash
+npm run build
+```
+
+Результат сборки - каталог `dist/`.
+
+Локальная проверка собранной версии:
+
+```bash
+npm run preview
 ```

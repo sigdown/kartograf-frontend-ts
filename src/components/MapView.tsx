@@ -40,13 +40,19 @@ const overlaySourceId = 'selected-map-overlay-source'
 const overlayLayerId = 'selected-map-overlay-layer'
 const defaultOverlayOpacity = 0.72
 const overlaySourceMaxZoom = 18
+const defaultMapsBaseUrl = 'https://maps-fallback.invalid'
+const mapsBaseUrl =
+  (import.meta.env.VITE_MAPS_BASE_URL as string | undefined)?.trim() ||
+  defaultMapsBaseUrl
 
 function getPointKey(point: RemotePoint) {
   return point.id ?? `${point.name}:${point.lat}:${point.lon}`
 }
 
 function buildOverlayTilesUrl(slug: string) {
-  return `https://maps.kartograf.xyz/old/${encodeURIComponent(slug)}/{z}/{x}/{y}.webp`
+  const normalizedBase = mapsBaseUrl.replace(/\/+$/, '')
+
+  return `${normalizedBase}/old/${encodeURIComponent(slug)}/{z}/{x}/{y}.webp`
 }
 
 function buildViewportSnapshot(map: MapLibreMap): MapViewport {
