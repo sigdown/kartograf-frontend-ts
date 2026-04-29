@@ -93,7 +93,13 @@ export function useAppController() {
   }
 
   useEffect(() => {
-    saveWorkspaceState(workspace)
+    const saveTimeoutId = window.setTimeout(() => {
+      saveWorkspaceState(workspace)
+    }, 120)
+
+    return () => {
+      window.clearTimeout(saveTimeoutId)
+    }
   }, [workspace])
 
   useEffect(() => {

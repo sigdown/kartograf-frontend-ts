@@ -35,10 +35,11 @@ type MapViewProps = {
 
 const defaultCenter: [number, number] = [37.617635, 55.755814]
 const defaultZoom = 10
+const maxMapZoom = 17
 const overlaySourceId = 'selected-map-overlay-source'
 const overlayLayerId = 'selected-map-overlay-layer'
 const defaultOverlayOpacity = 0.72
-const overlaySourceMaxZoom = 14
+const overlaySourceMaxZoom = 18
 
 function getPointKey(point: RemotePoint) {
   return point.id ?? `${point.name}:${point.lat}:${point.lon}`
@@ -246,6 +247,7 @@ export function MapView({
         ? [initialViewportRef.current.lng, initialViewportRef.current.lat]
         : defaultCenter,
       zoom: initialViewportRef.current?.zoom ?? defaultZoom,
+      maxZoom: maxMapZoom,
       bearing: initialViewportRef.current?.bearing ?? 0,
       pitch: initialViewportRef.current?.pitch ?? 0,
     })
