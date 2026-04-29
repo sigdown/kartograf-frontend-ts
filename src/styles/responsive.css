@@ -111,9 +111,13 @@
     font-size: 22px;
   }
 
-  .maplibregl-ctrl-top-right {
+  .app-shell .maplibregl-ctrl-top-right {
     top: auto;
     right: 20px;
+    bottom: 20px;
+  }
+
+  .app-shell.app-shell--points-open .maplibregl-ctrl-top-right {
     bottom: 220px;
   }
 }

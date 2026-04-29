@@ -22,6 +22,7 @@ type WorkspaceSidebarProps = {
   downloadError: string
   downloadingMapKey: string | null
   isAuthenticated: boolean
+  isOpen: boolean
   onBackToHome: () => void
   onClose: () => void
   onOverlayOpacityChange: (opacity: number) => void
@@ -47,6 +48,7 @@ export function WorkspaceSidebar({
   downloadError,
   downloadingMapKey,
   isAuthenticated,
+  isOpen,
   onBackToHome,
   onClose,
   onOverlayOpacityChange,
@@ -58,7 +60,7 @@ export function WorkspaceSidebar({
   const { workspace } = useSiteContent()
 
   return (
-    <aside className="sidebar">
+    <aside className={isOpen ? 'sidebar is-open' : 'sidebar'}>
       <div className="sidebar__inner">
         <header className="sidebar__header">
           <div className="points-panel__top">

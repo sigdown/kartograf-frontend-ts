@@ -99,15 +99,18 @@ export function MapWorkspacePage({
 }: MapWorkspacePageProps) {
   const { workspace: workspaceContent } = useSiteContent()
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const shellClassName = [
+    'app-shell',
+    'app-shell--with-header',
+    authSession ? '' : 'app-shell--guest',
+    isSidebarOpen ? 'app-shell--sidebar-open' : 'app-shell--sidebar-closed',
+    isPointsPanelOpen ? 'app-shell--points-open' : 'app-shell--points-closed',
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
-    <main
-      className={
-        authSession
-          ? 'app-shell app-shell--with-header'
-          : 'app-shell app-shell--guest app-shell--with-header'
-      }
-    >
+    <main className={shellClassName}>
       <MapView
         basemap={workspace.basemap}
         selectedMapSlug={workspace.selectedMapSlug}
@@ -150,56 +153,59 @@ export function MapWorkspacePage({
         }}
       />
 
-      {isSidebarOpen ? (
-        <WorkspaceSidebar
-          selectedMap={selectedMap}
-          selectedMapTitle={selectedMapTitle}
-          selectedMapDescription={selectedMapDescription}
-          maps={maps}
-          filteredMaps={filteredMaps}
-          selectedMapSlug={workspace.selectedMapSlug}
-          expandedMapSlug={workspace.expandedMapSlug}
-          searchQuery={workspace.searchQuery}
-          basemap={workspace.basemap}
-          overlayOpacity={workspace.overlayOpacity}
-          isLoadingMaps={isLoadingMaps}
-          mapsError={mapsError}
-          downloadError={downloadError}
-          downloadingMapKey={downloadingMapKey}
-          isAuthenticated={Boolean(authSession)}
-          onBackToHome={onBackToHome}
-          onClose={() => setIsSidebarOpen(false)}
-          onOverlayOpacityChange={(overlayOpacity) =>
-            setWorkspace((current) => ({
-              ...current,
-              overlayOpacity,
-            }))
-          }
-          onBasemapChange={(basemap) =>
-            setWorkspace((current) => ({
-              ...current,
-              basemap,
-            }))
-          }
-          onSearchChange={(searchQuery) =>
-            setWorkspace((current) => ({
-              ...current,
-              searchQuery,
-            }))
-          }
-          onCatalogCardClick={handleCatalogCardClick}
-          onDownloadMap={(map) => void handleDownloadMap(map)}
-        />
-      ) : (
-        <button
-          type="button"
-          className="points-panel-toggle workspace-sidebar-toggle"
-          onClick={() => setIsSidebarOpen(true)}
-          aria-label="Открыть панель настроек"
-        >
-          Настройки
-        </button>
-      )}
+      <WorkspaceSidebar
+        selectedMap={selectedMap}
+        selectedMapTitle={selectedMapTitle}
+        selectedMapDescription={selectedMapDescription}
+        maps={maps}
+        filteredMaps={filteredMaps}
+        selectedMapSlug={workspace.selectedMapSlug}
+        expandedMapSlug={workspace.expandedMapSlug}
+        searchQuery={workspace.searchQuery}
+        basemap={workspace.basemap}
+        overlayOpacity={workspace.overlayOpacity}
+        isLoadingMaps={isLoadingMaps}
+        mapsError={mapsError}
+        downloadError={downloadError}
+        downloadingMapKey={downloadingMapKey}
+        isAuthenticated={Boolean(authSession)}
+        isOpen={isSidebarOpen}
+        onBackToHome={onBackToHome}
+        onClose={() => setIsSidebarOpen(false)}
+        onOverlayOpacityChange={(overlayOpacity) =>
+          setWorkspace((current) => ({
+            ...current,
+            overlayOpacity,
+          }))
+        }
+        onBasemapChange={(basemap) =>
+          setWorkspace((current) => ({
+            ...current,
+            basemap,
+          }))
+        }
+        onSearchChange={(searchQuery) =>
+          setWorkspace((current) => ({
+            ...current,
+            searchQuery,
+          }))
+        }
+        onCatalogCardClick={handleCatalogCardClick}
+        onDownloadMap={(map) => void handleDownloadMap(map)}
+      />
+
+      <button
+        type="button"
+        className={
+          isSidebarOpen
+            ? 'points-panel-toggle workspace-sidebar-toggle points-panel-toggle--hidden'
+            : 'points-panel-toggle workspace-sidebar-toggle'
+        }
+        onClick={() => setIsSidebarOpen(true)}
+        aria-label="Открыть панель настроек"
+      >
+        Настройки
+      </button>
 
       {authSession ? (
         <PointsPanel

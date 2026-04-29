@@ -70,6 +70,14 @@ button.map-point-marker {
   left: 12px;
   width: min(336px, calc(100vw - 24px));
   z-index: 2;
+  pointer-events: none;
+  transform: translateX(calc(-100% - 16px));
+  transition: transform 0.28s var(--motion-gentle);
+}
+
+.sidebar.is-open {
+  pointer-events: auto;
+  transform: translateX(0);
 }
 
 .sidebar__inner,
@@ -544,8 +552,13 @@ button.map-point-marker {
   box-shadow: inset 3px 0 0 var(--color-accent);
 }
 
-.maplibregl-ctrl-top-right {
+.app-shell .maplibregl-ctrl-top-right {
   top: 14px;
+  right: 92px;
+  transition: right 0.28s var(--motion-gentle);
+}
+
+.app-shell.app-shell--points-open .maplibregl-ctrl-top-right {
   right: 328px;
 }
 
@@ -579,9 +592,11 @@ button.map-point-marker {
   z-index: 3;
   border: 1px solid var(--map-panel-border);
   border-radius: var(--radius-control);
-  padding: 9px 12px;
+  min-height: 34px;
+  padding: 6px 12px;
   background: var(--map-panel-bg);
   color: var(--color-text);
+  line-height: 1;
   box-shadow: var(--shadow-panel);
   backdrop-filter: blur(10px);
   cursor: pointer;
@@ -599,6 +614,7 @@ button.map-point-marker {
 .workspace-sidebar-toggle {
   left: 12px;
   right: auto;
+  top: 12px;
   z-index: 2;
 }
 
