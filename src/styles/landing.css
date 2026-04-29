@@ -74,8 +74,8 @@
   color: var(--color-text);
 }
 
-.static-page__section p {
-  margin: 10px 0 0;
+.static-page__content p {
+  margin: 6px 0 0;
   color: var(--color-text-muted);
   line-height: 1.6;
 }
