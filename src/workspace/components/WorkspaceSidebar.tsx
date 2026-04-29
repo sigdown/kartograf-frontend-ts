@@ -13,7 +13,6 @@ type WorkspaceSidebarProps = {
   maps: MapItem[]
   filteredMaps: MapItem[]
   selectedMapSlug: string | null
-  expandedMapSlug: string | null
   searchQuery: string
   basemap: BasemapId
   overlayOpacity: number
@@ -39,7 +38,6 @@ export function WorkspaceSidebar({
   maps,
   filteredMaps,
   selectedMapSlug,
-  expandedMapSlug,
   searchQuery,
   basemap,
   overlayOpacity,
@@ -103,7 +101,6 @@ export function WorkspaceSidebar({
           maps={maps}
           filteredMaps={filteredMaps}
           selectedMapSlug={selectedMapSlug}
-          expandedMapSlug={expandedMapSlug}
           searchQuery={searchQuery}
           isLoading={isLoadingMaps}
           mapsError={mapsError}

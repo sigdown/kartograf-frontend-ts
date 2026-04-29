@@ -160,7 +160,6 @@ export function MapWorkspacePage({
         maps={maps}
         filteredMaps={filteredMaps}
         selectedMapSlug={workspace.selectedMapSlug}
-        expandedMapSlug={workspace.expandedMapSlug}
         searchQuery={workspace.searchQuery}
         basemap={workspace.basemap}
         overlayOpacity={workspace.overlayOpacity}

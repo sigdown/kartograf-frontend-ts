@@ -150,7 +150,7 @@ button.map-point-marker {
   align-content: start;
   gap: 14px;
   padding: 18px 16px 16px;
-  overflow: auto;
+  overflow: hidden;
   box-shadow:
     var(--shadow-panel),
     inset 0 1px 0 rgba(255, 255, 255, 0.16);
@@ -176,6 +176,12 @@ button.map-point-marker {
 .basemap-switcher {
   display: grid;
   gap: 10px;
+}
+
+.points-panel__list {
+  min-height: 0;
+  overflow: hidden;
+  padding-right: 0;
 }
 
 .sidebar__inner,
@@ -224,8 +230,8 @@ button.map-point-marker {
 .point-row-card,
 .account-point-card__summary {
   display: grid;
-  gap: 8px;
-  padding: 14px;
+  gap: 4px;
+  padding: 7px 10px;
   text-align: left;
   cursor: pointer;
 }
@@ -242,14 +248,35 @@ button.map-point-marker {
 
 .point-row-card__head span,
 .account-point-card__head span {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--color-text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .point-row-card.is-active {
   border-color: var(--color-marker-selected);
-  background: color-mix(in srgb, var(--accent-soft) 56%, var(--color-surface));
-  box-shadow: 0 12px 24px var(--accent-soft);
+  background: color-mix(in srgb, var(--accent-soft) 36%, var(--color-surface));
+  box-shadow: inset 3px 0 0 var(--color-marker-selected);
+}
+
+.point-row-card strong {
+  font-size: 12px;
+  line-height: 1.15;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.point-row-card__preview {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--color-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .account-point-card {
@@ -391,149 +418,89 @@ button.map-point-marker {
 
 .catalog-card {
   overflow: hidden;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--color-surface) 94%, transparent) 0%, color-mix(in srgb, var(--color-surface) 88%, var(--color-surface-muted)) 100%);
+  background: color-mix(in srgb, var(--color-surface) 94%, transparent);
   transition:
-    border-color 0.34s var(--motion-gentle),
-    background-color 0.34s var(--motion-gentle),
-    box-shadow 0.34s var(--motion-gentle),
-    transform 0.34s var(--motion-gentle);
+    border-color 0.24s var(--motion-gentle),
+    background-color 0.24s var(--motion-gentle),
+    box-shadow 0.24s var(--motion-gentle);
 }
 
 .catalog-card:hover {
   border-color: var(--color-accent);
-  background: color-mix(in srgb, var(--accent-soft) 36%, var(--color-surface));
-  box-shadow: 0 10px 24px rgba(31, 41, 51, 0.08);
-  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--accent-soft) 20%, var(--color-surface));
+  box-shadow: 0 6px 14px rgba(31, 41, 51, 0.07);
 }
 
 .catalog-card.is-active {
   border-color: var(--color-accent);
-  background: color-mix(in srgb, var(--accent-soft) 48%, var(--color-surface));
-  box-shadow: 0 12px 28px rgba(183, 121, 31, 0.16);
+  background: color-mix(in srgb, var(--accent-soft) 30%, var(--color-surface));
+  box-shadow: inset 3px 0 0 var(--color-accent);
 }
 
 .catalog-card__summary {
   width: 100%;
   display: grid;
-  gap: 12px;
-  padding: 14px;
-  border: 0;
-  background: transparent;
-  color: inherit;
+  gap: 8px;
+  padding: 10px 12px;
   text-align: left;
-  cursor: pointer;
-  transition:
-    gap 0.3s var(--motion-gentle),
-    transform 0.3s var(--motion-gentle),
-    background-color 0.3s var(--motion-gentle);
-}
-
-.catalog-card:hover .catalog-card__summary {
-  transform: translateY(-1px);
-}
-
-.catalog-card__summary:focus-visible {
-  outline-offset: -2px;
 }
 
 .catalog-card__title-group {
   min-width: 0;
   display: grid;
-  gap: 8px;
+  gap: 4px;
 }
 
 .catalog-card__title {
-  font-size: 17px;
-  line-height: 1.2;
-}
-
-.catalog-card__toggle {
-  border: 1px solid color-mix(in srgb, var(--color-border) 84%, transparent);
-  color: var(--color-text-muted);
-  font-size: 11px;
-}
-
-.catalog-card.is-expanded .catalog-card__toggle {
-  background: var(--accent-soft);
-  color: var(--color-accent);
-  border-color: color-mix(in srgb, var(--color-accent) 24%, var(--color-border));
+  font-size: 15px;
+  line-height: 1.15;
 }
 
 .catalog-card__preview {
   margin: 0;
-  font-size: 13px;
-  line-height: 1.45;
-  max-height: 0;
-  opacity: 0;
-  transform: translateY(-8px);
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--color-text-muted);
   overflow: hidden;
-  transition:
-    max-height 0.34s var(--motion-gentle),
-    opacity 0.26s ease,
-    transform 0.34s var(--motion-gentle);
-}
-
-.catalog-card.is-active .catalog-card__preview,
-.catalog-card.is-expanded .catalog-card__preview {
-  max-height: 4.8em;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.catalog-card__panel {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition:
-    grid-template-rows 0.36s var(--motion-gentle),
-    opacity 0.24s ease;
-  opacity: 0;
-}
-
-.catalog-card__panel.is-open {
-  grid-template-rows: 1fr;
-  opacity: 1;
-}
-
-.catalog-card__panel-inner {
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition:
-    opacity 0.32s ease,
-    transform 0.36s var(--motion-gentle);
-}
-
-.catalog-card__panel.is-open .catalog-card__panel-inner {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.catalog-card__body {
-  display: grid;
-  gap: 10px;
-  padding: 0 14px 14px;
-  border-top: 1px solid var(--color-border);
-  transform: translateY(-4px);
-  transition: transform 0.34s var(--motion-gentle);
-}
-
-.catalog-card__panel.is-open .catalog-card__body {
-  transform: translateY(0);
-}
-
-.catalog-card__actions .entry-card__button {
-  margin-top: 4px;
-}
-
-.catalog-card__description {
-  padding-top: 12px;
-  font-size: 13px;
-  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .catalog-card__detail dd {
   text-align: right;
+}
+
+.catalog-card__actions {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 5px;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 0;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 12px;
+}
+
+.catalog-card__actions--inline .entry-card__button {
+  margin: 0;
+  padding: 6px 10px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.catalog-preview-modal {
+  display: grid;
+  gap: 14px;
+}
+
+.catalog-preview-modal__description {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.catalog-card__actions--modal {
+  justify-content: flex-end;
 }
 
 .basemap-switcher__button {
@@ -563,6 +530,20 @@ button.map-point-marker {
 }
 
 .app-shell--guest .maplibregl-ctrl-top-right {
+  right: 14px;
+}
+
+.app-shell .maplibregl-ctrl-bottom-right {
+  right: 6px;
+  bottom: 6px;
+  transition: right 0.28s var(--motion-gentle), bottom 0.28s var(--motion-gentle);
+}
+
+.app-shell.app-shell--points-open .maplibregl-ctrl-bottom-right {
+  right: 328px;
+}
+
+.app-shell--guest .maplibregl-ctrl-bottom-right {
   right: 14px;
 }
 

@@ -233,7 +233,7 @@ export function AuthDialog({ onCancel, onSuccess }: AuthDialogProps) {
                 onClick={onCancel}
                 disabled={isSubmitting}
               >
-                ← Назад
+                На главную
               </button>
             </div>
           </form>
@@ -317,7 +317,7 @@ export function AuthDialog({ onCancel, onSuccess }: AuthDialogProps) {
                 onClick={onCancel}
                 disabled={isSubmitting}
               >
-                ← Назад
+                На главную
               </button>
             </div>
           </form>

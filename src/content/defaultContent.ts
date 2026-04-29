@@ -84,7 +84,7 @@ export const defaultSiteContent: SiteContent = {
     fallbackMapTitle: 'Карты',
     fallbackMapDescription: 'Выберите подложку и откройте карту из каталога.',
     selectedMapDescriptionTemplate: 'Исторический слой для карты «{slug}».',
-    backToHome: '← Назад',
+    backToHome: 'На главную',
     overlayLabel: 'Слой карты',
     overlayTitle: 'Прозрачность',
     overlaySelectedTemplate: 'Слой для карты «{title}».',

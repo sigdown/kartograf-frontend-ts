@@ -215,7 +215,7 @@ export function AccountPanel({
       <section className="account-shell account-shell--narrow">
         <div className="account-shell__top">
           <button type="button" className="back-link" onClick={onBack}>
-            ← Назад
+            На главную
           </button>
           <p className="sidebar__eyebrow">Профиль</p>
           <h1 className="account-shell__title">

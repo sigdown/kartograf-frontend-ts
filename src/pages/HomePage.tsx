@@ -87,13 +87,15 @@ export function HomePage({
               <p className="entry-card__eyebrow">{home.adminCard.eyebrow}</p>
               <h2 className="entry-card__title">{home.adminCard.title}</h2>
               <p className="entry-card__text">{home.adminCard.text}</p>
-              <button
-                type="button"
-                className="entry-card__button entry-card__button--secondary"
-                onClick={() => setScreenMode('admin')}
-              >
-                {home.adminCard.primaryAction}
-              </button>
+              <div className="entry-card__actions">
+                <button
+                  type="button"
+                  className="entry-card__button entry-card__button--secondary"
+                  onClick={() => setScreenMode('admin')}
+                >
+                  {home.adminCard.primaryAction}
+                </button>
+              </div>
             </article>
           ) : null}
         </div>

@@ -170,6 +170,8 @@
 .auth-panel__box,
 .account-card,
 .admin-card {
+  display: flex;
+  flex-direction: column;
   padding: 20px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
@@ -201,7 +203,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 14px;
+  margin-top: auto;
+  padding-top: 14px;
 }
 
 .entry-card__actions .entry-card__button {

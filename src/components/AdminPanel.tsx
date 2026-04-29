@@ -501,7 +501,7 @@ export function AdminPanel({ session, onClose, onMapsChanged }: AdminPanelProps)
         <aside className="admin-nav">
           <div className="admin-nav__top">
             <button type="button" className="back-link" onClick={onClose}>
-              ← Назад
+              На главную
             </button>
             <p className="sidebar__eyebrow">Админка</p>
             <h1 className="admin-nav__title">Управление картами</h1>

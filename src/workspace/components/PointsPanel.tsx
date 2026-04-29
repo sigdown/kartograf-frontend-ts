@@ -126,7 +126,9 @@ export function PointsPanel({
                         {point.lat.toFixed(4)}, {point.lon.toFixed(4)}
                       </span>
                     </div>
-                    <p>{point.description || workspace.pointDescriptionEmpty}</p>
+                    <p className="point-row-card__preview">
+                      {point.description || workspace.pointDescriptionEmpty}
+                    </p>
                   </button>
                 )
               })}

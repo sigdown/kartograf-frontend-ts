@@ -21,7 +21,7 @@ export function StaticPage({ pageId, onBack }: StaticPageProps) {
           className="back-link static-page__back"
           onClick={onBack}
         >
-          ← Назад
+          На главную
         </button>
         <p className="static-page__eyebrow">{page.eyebrow}</p>
         <h1 className="static-page__title">{page.title}</h1>

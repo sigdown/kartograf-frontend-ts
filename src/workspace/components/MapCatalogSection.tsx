@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useSiteContent } from '../../content/siteContent'
 import type { MapItem } from '../../types/maps'
 import { MapCatalogCard } from './MapCatalogCard'
@@ -6,7 +8,6 @@ type MapCatalogSectionProps = {
   maps: MapItem[]
   filteredMaps: MapItem[]
   selectedMapSlug: string | null
-  expandedMapSlug: string | null
   searchQuery: string
   isLoading: boolean
   mapsError: string
@@ -22,7 +23,6 @@ export function MapCatalogSection({
   maps,
   filteredMaps,
   selectedMapSlug,
-  expandedMapSlug,
   searchQuery,
   isLoading,
   mapsError,
@@ -34,6 +34,11 @@ export function MapCatalogSection({
   onDownload,
 }: MapCatalogSectionProps) {
   const { workspace } = useSiteContent()
+  const [previewMap, setPreviewMap] = useState<MapItem | null>(null)
+  const previewMapKey = previewMap ? previewMap.id ?? previewMap.slug : null
+  const isPreviewDownloading = Boolean(
+    previewMapKey && downloadingMapKey === previewMapKey,
+  )
 
   return (
     <section className="sidebar__section">
@@ -82,16 +87,88 @@ export function MapCatalogSection({
                 key={mapKey}
                 map={map}
                 isSelected={selectedMapSlug === map.slug}
-                isExpanded={expandedMapSlug === map.slug}
                 isAuthenticated={isAuthenticated}
                 isDownloading={downloadingMapKey === mapKey}
                 onSelect={onCardClick}
+                onPreview={setPreviewMap}
                 onDownload={onDownload}
               />
             )
           })}
         </div>
       ) : null}
+
+      {previewMap
+        ? createPortal(
+            <div
+              className="modal-backdrop"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Детали карты"
+              onClick={() => setPreviewMap(null)}
+            >
+              <article
+                className="modal-card catalog-preview-modal"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <h2 className="modal-card__title">{previewMap.title}</h2>
+                <dl className="catalog-card__details">
+                  <div className="catalog-card__detail">
+                    <dt>Slug</dt>
+                    <dd>{previewMap.slug}</dd>
+                  </div>
+                  <div className="catalog-card__detail">
+                    <dt>{workspace.mapDetailYear}</dt>
+                    <dd>{previewMap.year ?? workspace.mapYearUnknown}</dd>
+                  </div>
+                  <div className="catalog-card__detail">
+                    <dt>{workspace.mapDetailStatus}</dt>
+                    <dd>
+                      {selectedMapSlug === previewMap.slug
+                        ? workspace.mapStatusSelected
+                        : workspace.mapStatusAvailable}
+                    </dd>
+                  </div>
+                </dl>
+                <p className="catalog-preview-modal__description">
+                  {previewMap.description || workspace.mapDescriptionEmpty}
+                </p>
+                <div className="catalog-card__actions catalog-card__actions--modal">
+                  <button
+                    type="button"
+                    className="entry-card__button"
+                    onClick={() => {
+                      onCardClick(previewMap)
+                      setPreviewMap(null)
+                    }}
+                  >
+                    Выбрать на карте
+                  </button>
+                  {isAuthenticated ? (
+                    <button
+                      type="button"
+                      className="entry-card__button entry-card__button--secondary"
+                      onClick={() => onDownload(previewMap)}
+                      disabled={!previewMap.id || isPreviewDownloading}
+                    >
+                      {isPreviewDownloading
+                        ? workspace.downloadPending
+                        : workspace.downloadAction}
+                    </button>
+                  ) : null}
+                  <button
+                    type="button"
+                    className="entry-card__button entry-card__button--secondary"
+                    onClick={() => setPreviewMap(null)}
+                  >
+                    Закрыть
+                  </button>
+                </div>
+              </article>
+            </div>,
+            document.body,
+          )
+        : null}
     </section>
   )
 }
