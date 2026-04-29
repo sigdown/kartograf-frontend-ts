@@ -1,3 +1,5 @@
+import { getMapsBaseUrl } from './runtimeConfig'
+
 export type BasemapId = 'vector' | 'hybrid'
 
 export type BasemapOption = {
@@ -6,11 +8,7 @@ export type BasemapOption = {
   styleUrl: string
 }
 
-const defaultMapsBaseUrl = 'https://maps-fallback.invalid'
-const mapsBaseUrl =
-  (import.meta.env.VITE_MAPS_BASE_URL as string | undefined)?.trim() ||
-  defaultMapsBaseUrl
-const normalizedMapsBaseUrl = mapsBaseUrl.replace(/\/+$/, '')
+const normalizedMapsBaseUrl = getMapsBaseUrl().replace(/\/+$/, '')
 
 export const basemapOptions: BasemapOption[] = [
   {

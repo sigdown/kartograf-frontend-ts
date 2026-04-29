@@ -4,6 +4,7 @@ import maplibregl, {
   type Map as MapLibreMap,
 } from 'maplibre-gl'
 import { getBasemapStyleUrl, type BasemapId } from '../config/basemaps'
+import { getMapsBaseUrl } from '../config/runtimeConfig'
 import type { RemotePoint } from '../types/points'
 import type { MapViewport } from '../types/workspace'
 
@@ -40,17 +41,13 @@ const overlaySourceId = 'selected-map-overlay-source'
 const overlayLayerId = 'selected-map-overlay-layer'
 const defaultOverlayOpacity = 0.72
 const overlaySourceMaxZoom = 18
-const defaultMapsBaseUrl = 'https://maps-fallback.invalid'
-const mapsBaseUrl =
-  (import.meta.env.VITE_MAPS_BASE_URL as string | undefined)?.trim() ||
-  defaultMapsBaseUrl
 
 function getPointKey(point: RemotePoint) {
   return point.id ?? `${point.name}:${point.lat}:${point.lon}`
 }
 
 function buildOverlayTilesUrl(slug: string) {
-  const normalizedBase = mapsBaseUrl.replace(/\/+$/, '')
+  const normalizedBase = getMapsBaseUrl().replace(/\/+$/, '')
 
   return `${normalizedBase}/old/${encodeURIComponent(slug)}/{z}/{x}/{y}.webp`
 }

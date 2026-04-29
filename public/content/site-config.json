@@ -1,0 +1,6 @@
+{
+  "endpoints": {
+    "apiBaseUrl": "https://api.kartograf.xyz",
+    "mapsBaseUrl": "https://maps.kartograf.xyz"
+  }
+}
