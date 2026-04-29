@@ -15,7 +15,20 @@ export function SiteHeader({ authSession, isAdmin, onNavigate, onLogout }: SiteH
   return (
     <header className="landing-header">
       <div className="landing-header__brand">
-        <span className="landing-header__logo">{content.appName}</span>
+        <button
+          type="button"
+          className="landing-header__logo-link"
+          onClick={() => onNavigate('home')}
+          aria-label="На главную"
+        >
+          <img
+            className="landing-header__logo-icon"
+            src="/content/logo.png"
+            alt=""
+            aria-hidden="true"
+          />
+          <span className="landing-header__logo">{content.appName}</span>
+        </button>
         <span className="landing-header__note">{content.tagline}</span>
       </div>
       <div className="landing-header__actions">
