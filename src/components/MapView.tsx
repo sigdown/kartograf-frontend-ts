@@ -35,11 +35,11 @@ type MapViewProps = {
 
 const defaultCenter: [number, number] = [37.617635, 55.755814]
 const defaultZoom = 10
-const maxMapZoom = 17
+const maxMapZoom = 16
 const overlaySourceId = 'selected-map-overlay-source'
 const overlayLayerId = 'selected-map-overlay-layer'
 const defaultOverlayOpacity = 0.72
-const overlaySourceMaxZoom = 18
+const overlaySourceMaxZoom = 16
 
 function getPointKey(point: RemotePoint) {
   return point.id ?? `${point.name}:${point.lat}:${point.lon}`
@@ -159,6 +159,18 @@ export function MapView({
     onPointSelectRef.current = onPointSelect
   }, [onPointSelect])
 
+  function applyOverlayOpacity(map: MapLibreMap) {
+    if (!map.getLayer(overlayLayerId)) {
+      return
+    }
+
+    map.setPaintProperty(
+      overlayLayerId,
+      'raster-opacity',
+      activeSelectedMapOpacityRef.current,
+    )
+  }
+
   function scheduleOverlaySync(
     map: MapLibreMap,
     options?: { waitForNextStyleEvent?: boolean },
@@ -201,6 +213,7 @@ export function MapView({
           activeSelectedMapSlugRef.current,
           activeSelectedMapOpacityRef.current,
         )
+        applyOverlayOpacity(map)
         cleanup()
         return
       }
@@ -316,16 +329,11 @@ export function MapView({
 
     activeSelectedMapOpacityRef.current = selectedMapOpacity
 
-    if (!map || !map.isStyleLoaded()) {
+    if (!map) {
       return
     }
 
-    if (!map.getLayer(overlayLayerId)) {
-      scheduleOverlaySync(map)
-      return
-    }
-
-    map.setPaintProperty(overlayLayerId, 'raster-opacity', selectedMapOpacity)
+    applyOverlayOpacity(map)
   }, [selectedMapOpacity])
 
   useEffect(() => {
