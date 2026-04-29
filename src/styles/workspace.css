@@ -596,6 +596,12 @@ button.map-point-marker {
   transform: translateY(-6px);
 }
 
+.workspace-sidebar-toggle {
+  left: 12px;
+  right: auto;
+  z-index: 2;
+}
+
 .points-panel__empty {
   display: grid;
   gap: 8px;

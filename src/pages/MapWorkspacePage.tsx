@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from 'react'
+import { useState, type Dispatch, type SetStateAction } from 'react'
 import { MapView } from '../components/MapView'
 import { useSiteContent } from '../content/siteContent'
 import type { AuthSession } from '../types/auth'
@@ -98,6 +98,7 @@ export function MapWorkspacePage({
   handleDeletePoint,
 }: MapWorkspacePageProps) {
   const { workspace: workspaceContent } = useSiteContent()
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
 
   return (
     <main
@@ -149,44 +150,56 @@ export function MapWorkspacePage({
         }}
       />
 
-      <WorkspaceSidebar
-        selectedMap={selectedMap}
-        selectedMapTitle={selectedMapTitle}
-        selectedMapDescription={selectedMapDescription}
-        maps={maps}
-        filteredMaps={filteredMaps}
-        selectedMapSlug={workspace.selectedMapSlug}
-        expandedMapSlug={workspace.expandedMapSlug}
-        searchQuery={workspace.searchQuery}
-        basemap={workspace.basemap}
-        overlayOpacity={workspace.overlayOpacity}
-        isLoadingMaps={isLoadingMaps}
-        mapsError={mapsError}
-        downloadError={downloadError}
-        downloadingMapKey={downloadingMapKey}
-        isAuthenticated={Boolean(authSession)}
-        onBackToHome={onBackToHome}
-        onOverlayOpacityChange={(overlayOpacity) =>
-          setWorkspace((current) => ({
-            ...current,
-            overlayOpacity,
-          }))
-        }
-        onBasemapChange={(basemap) =>
-          setWorkspace((current) => ({
-            ...current,
-            basemap,
-          }))
-        }
-        onSearchChange={(searchQuery) =>
-          setWorkspace((current) => ({
-            ...current,
-            searchQuery,
-          }))
-        }
-        onCatalogCardClick={handleCatalogCardClick}
-        onDownloadMap={(map) => void handleDownloadMap(map)}
-      />
+      {isSidebarOpen ? (
+        <WorkspaceSidebar
+          selectedMap={selectedMap}
+          selectedMapTitle={selectedMapTitle}
+          selectedMapDescription={selectedMapDescription}
+          maps={maps}
+          filteredMaps={filteredMaps}
+          selectedMapSlug={workspace.selectedMapSlug}
+          expandedMapSlug={workspace.expandedMapSlug}
+          searchQuery={workspace.searchQuery}
+          basemap={workspace.basemap}
+          overlayOpacity={workspace.overlayOpacity}
+          isLoadingMaps={isLoadingMaps}
+          mapsError={mapsError}
+          downloadError={downloadError}
+          downloadingMapKey={downloadingMapKey}
+          isAuthenticated={Boolean(authSession)}
+          onBackToHome={onBackToHome}
+          onClose={() => setIsSidebarOpen(false)}
+          onOverlayOpacityChange={(overlayOpacity) =>
+            setWorkspace((current) => ({
+              ...current,
+              overlayOpacity,
+            }))
+          }
+          onBasemapChange={(basemap) =>
+            setWorkspace((current) => ({
+              ...current,
+              basemap,
+            }))
+          }
+          onSearchChange={(searchQuery) =>
+            setWorkspace((current) => ({
+              ...current,
+              searchQuery,
+            }))
+          }
+          onCatalogCardClick={handleCatalogCardClick}
+          onDownloadMap={(map) => void handleDownloadMap(map)}
+        />
+      ) : (
+        <button
+          type="button"
+          className="points-panel-toggle workspace-sidebar-toggle"
+          onClick={() => setIsSidebarOpen(true)}
+          aria-label="Открыть панель настроек"
+        >
+          Настройки
+        </button>
+      )}
 
       {authSession ? (
         <PointsPanel

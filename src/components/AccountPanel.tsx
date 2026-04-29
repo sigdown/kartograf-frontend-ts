@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   deleteCurrentUserAccount,
   updateCurrentUser,
@@ -97,10 +97,12 @@ export function AccountPanel({
   onUpdatePoint,
   onDeletePoint,
 }: AccountPanelProps) {
+  const pageSize = 10
   const [mode, setMode] = useState<'view' | 'edit'>('view')
   const [form, setForm] = useState<AccountFormState>(() =>
     getInitialFormState(session),
   )
+  const [visibleCount, setVisibleCount] = useState(pageSize)
   const [expandedPointId, setExpandedPointId] = useState<string | null>(null)
   const [editingPoint, setEditingPoint] = useState<RemotePoint | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -108,6 +110,35 @@ export function AccountPanel({
   const [statusTone, setStatusTone] = useState<'neutral' | 'success' | 'error'>(
     'neutral',
   )
+  const visiblePoints = useMemo(
+    () => points.slice(0, visibleCount),
+    [points, visibleCount],
+  )
+  const canShowMorePoints = visibleCount < points.length
+
+  useEffect(() => {
+    setVisibleCount((current) => {
+      if (points.length === 0) {
+        return pageSize
+      }
+
+      return Math.min(Math.max(current, pageSize), points.length)
+    })
+  }, [points.length])
+
+  useEffect(() => {
+    if (!expandedPointId) {
+      return
+    }
+
+    const expandedIndex = points.findIndex((point) => getPointKey(point) === expandedPointId)
+
+    if (expandedIndex === -1 || expandedIndex < visibleCount) {
+      return
+    }
+
+    setVisibleCount(expandedIndex + 1)
+  }, [expandedPointId, points, visibleCount])
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -402,7 +433,7 @@ export function AccountPanel({
 
             {!isLoadingPoints && points.length > 0 ? (
               <div className="account-points-list">
-                {points.map((point) => {
+                {visiblePoints.map((point) => {
                   const pointKey = getPointKey(point)
                   const isExpanded = expandedPointId === pointKey
 
@@ -457,6 +488,15 @@ export function AccountPanel({
                     </article>
                   )
                 })}
+                {canShowMorePoints ? (
+                  <button
+                    type="button"
+                    className="entry-card__button"
+                    onClick={() => setVisibleCount((current) => Math.min(current + pageSize, points.length))}
+                  >
+                    Показать ещё
+                  </button>
+                ) : null}
               </div>
             ) : null}
           </article>

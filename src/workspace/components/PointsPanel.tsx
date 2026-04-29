@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from 'react'
 import { useSiteContent } from '../../content/siteContent'
 import type { RemotePoint } from '../../types/points'
 
@@ -25,6 +26,37 @@ export function PointsPanel({
   onSelectPoint,
 }: PointsPanelProps) {
   const { workspace } = useSiteContent()
+  const pageSize = 10
+  const [visibleCount, setVisibleCount] = useState(pageSize)
+  const visiblePoints = useMemo(
+    () => points.slice(0, visibleCount),
+    [points, visibleCount],
+  )
+  const canShowMore = visibleCount < points.length
+
+  useEffect(() => {
+    setVisibleCount((current) => {
+      if (points.length === 0) {
+        return pageSize
+      }
+
+      return Math.min(Math.max(current, pageSize), points.length)
+    })
+  }, [points.length])
+
+  useEffect(() => {
+    if (!activePointId) {
+      return
+    }
+
+    const activeIndex = points.findIndex((point) => getPointKey(point) === activePointId)
+
+    if (activeIndex === -1 || activeIndex < visibleCount) {
+      return
+    }
+
+    setVisibleCount(activeIndex + 1)
+  }, [activePointId, getPointKey, points, visibleCount])
 
   return (
     <>
@@ -74,7 +106,7 @@ export function PointsPanel({
 
           {!isLoading && points.length > 0 ? (
             <div className="points-panel__list">
-              {points.map((point) => {
+              {visiblePoints.map((point) => {
                 const pointKey = getPointKey(point)
 
                 return (
@@ -98,6 +130,15 @@ export function PointsPanel({
                   </button>
                 )
               })}
+              {canShowMore ? (
+                <button
+                  type="button"
+                  className="entry-card__button"
+                  onClick={() => setVisibleCount((current) => Math.min(current + pageSize, points.length))}
+                >
+                  Показать ещё
+                </button>
+              ) : null}
             </div>
           ) : null}
         </div>

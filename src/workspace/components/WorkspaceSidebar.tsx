@@ -23,6 +23,7 @@ type WorkspaceSidebarProps = {
   downloadingMapKey: string | null
   isAuthenticated: boolean
   onBackToHome: () => void
+  onClose: () => void
   onOverlayOpacityChange: (opacity: number) => void
   onBasemapChange: (basemap: BasemapId) => void
   onSearchChange: (query: string) => void
@@ -47,6 +48,7 @@ export function WorkspaceSidebar({
   downloadingMapKey,
   isAuthenticated,
   onBackToHome,
+  onClose,
   onOverlayOpacityChange,
   onBasemapChange,
   onSearchChange,
@@ -59,13 +61,23 @@ export function WorkspaceSidebar({
     <aside className="sidebar">
       <div className="sidebar__inner">
         <header className="sidebar__header">
-          <button
-            type="button"
-            className="back-link"
-            onClick={onBackToHome}
-          >
-            {workspace.backToHome}
-          </button>
+          <div className="points-panel__top">
+            <button
+              type="button"
+              className="back-link"
+              onClick={onBackToHome}
+            >
+              {workspace.backToHome}
+            </button>
+            <button
+              type="button"
+              className="points-panel__close"
+              onClick={onClose}
+              aria-label="Свернуть панель настроек"
+            >
+              {workspace.pointsClose}
+            </button>
+          </div>
           <h1 className="sidebar__title">{selectedMapTitle}</h1>
           <p className="sidebar__text">{selectedMapDescription}</p>
         </header>
