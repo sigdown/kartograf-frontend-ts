@@ -4,6 +4,7 @@ import type { RemotePoint } from '../../types/points'
 
 type PointsPanelProps = {
   isOpen: boolean
+  isAuthenticated: boolean
   points: RemotePoint[]
   activePointId: string | null
   isLoading: boolean
@@ -11,11 +12,13 @@ type PointsPanelProps = {
   getPointKey: (point: RemotePoint) => string
   onOpen: () => void
   onClose: () => void
+  onRequestAuth: () => void
   onSelectPoint: (point: RemotePoint) => void
 }
 
 export function PointsPanel({
   isOpen,
+  isAuthenticated,
   points,
   activePointId,
   isLoading,
@@ -23,9 +26,10 @@ export function PointsPanel({
   getPointKey,
   onOpen,
   onClose,
+  onRequestAuth,
   onSelectPoint,
 }: PointsPanelProps) {
-  const { workspace } = useSiteContent()
+  const { header, workspace } = useSiteContent()
   const pageSize = 10
   const [visibleCount, setVisibleCount] = useState(pageSize)
   const visiblePoints = useMemo(
@@ -90,21 +94,37 @@ export function PointsPanel({
             </button>
           </div>
 
-          {error ? <div className="admin-status is-error">{error}</div> : null}
+          {isAuthenticated && error ? <div className="admin-status is-error">{error}</div> : null}
 
-          {isLoading ? <p className="sidebar__text">{workspace.pointsLoading}</p> : null}
+          {isAuthenticated && isLoading ? <p className="sidebar__text">{workspace.pointsLoading}</p> : null}
 
-          {!isLoading && points.length === 0 ? (
+          {!isAuthenticated ? (
+            <div className="points-panel__empty" aria-live="polite">
+              <strong>Войдите, чтобы работать с точками</strong>
+              <p className="sidebar__text">
+                После входа можно добавлять точки на карте и сохранять их в аккаунт.
+              </p>
+              <button
+                type="button"
+                className="entry-card__button entry-card__button--primary"
+                onClick={onRequestAuth}
+              >
+                {header.login}
+              </button>
+            </div>
+          ) : null}
+
+          {isAuthenticated && !isLoading && points.length === 0 ? (
             <div className="points-panel__empty" aria-live="polite">
               <span className="points-panel__empty-icon" aria-hidden="true">
-                ◌
+                *
               </span>
               <strong>{workspace.pointsEmptyTitle}</strong>
               <p className="sidebar__text">{workspace.pointsEmptyText}</p>
             </div>
           ) : null}
 
-          {!isLoading && points.length > 0 ? (
+          {isAuthenticated && !isLoading && points.length > 0 ? (
             <div className="points-panel__list">
               {visiblePoints.map((point) => {
                 const pointKey = getPointKey(point)
@@ -138,7 +158,7 @@ export function PointsPanel({
                   className="entry-card__button"
                   onClick={() => setVisibleCount((current) => Math.min(current + pageSize, points.length))}
                 >
-                  Показать ещё
+                  Показать еще
                 </button>
               ) : null}
             </div>

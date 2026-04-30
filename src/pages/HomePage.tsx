@@ -1,4 +1,3 @@
-import { AuthDialog } from '../components/AuthDialog'
 import { useSiteContent } from '../content/siteContent'
 import type { AuthSession } from '../types/auth'
 
@@ -7,17 +6,13 @@ type HomeScreenMode = 'home' | 'guest-map' | 'auth' | 'admin' | 'account'
 type HomePageProps = {
   authSession: AuthSession | null
   isAdmin: boolean
-  isAuthOpen: boolean
   setScreenMode: (mode: HomeScreenMode) => void
-  onAuthSuccess: (session: AuthSession) => void
 }
 
 export function HomePage({
   authSession,
   isAdmin,
-  isAuthOpen,
   setScreenMode,
-  onAuthSuccess,
 }: HomePageProps) {
   const content = useSiteContent()
   const home = content.home
@@ -100,17 +95,6 @@ export function HomePage({
           ) : null}
         </div>
       </section>
-
-      {isAuthOpen ? (
-        <div className="modal-backdrop auth-overlay-backdrop" role="presentation">
-          <div className="auth-overlay">
-            <AuthDialog
-              onCancel={() => setScreenMode('home')}
-              onSuccess={onAuthSuccess}
-            />
-          </div>
-        </div>
-      ) : null}
     </>
   )
 }

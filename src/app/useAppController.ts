@@ -14,7 +14,7 @@ import {
   saveScreenMode,
   type ScreenMode,
 } from '../screen/screenMode'
-import { pathToScreenMode, routes, screenModeToPath } from '../screen/routes'
+import { pathToScreenMode, screenModeToPath } from '../screen/routes'
 import type { AuthSession } from '../types/auth'
 import type { MapItem } from '../types/maps'
 import type { PointPayload, RemotePoint } from '../types/points'
@@ -78,7 +78,6 @@ export function useAppController() {
   function setScreenMode(mode: ScreenMode) {
     if (mode === 'auth') {
       setIsAuthOpen(true)
-      navigate(routes.home)
       return
     }
 
@@ -92,6 +91,10 @@ export function useAppController() {
     setScreenMode('home')
   }
 
+  function closeAuthDialog() {
+    setIsAuthOpen(false)
+  }
+
   useEffect(() => {
     const saveTimeoutId = window.setTimeout(() => {
       saveWorkspaceState(workspace)
@@ -101,12 +104,6 @@ export function useAppController() {
       window.clearTimeout(saveTimeoutId)
     }
   }, [workspace])
-
-  useEffect(() => {
-    if (location.pathname !== routes.home && isAuthOpen) {
-      setIsAuthOpen(false)
-    }
-  }, [isAuthOpen, location.pathname])
 
   useEffect(() => {
     void refreshMaps()
@@ -418,6 +415,8 @@ export function useAppController() {
     workspace,
     setWorkspace,
     screenMode,
+    isAuthOpen,
+    closeAuthDialog,
     setScreenMode,
     effectiveScreenMode,
     isAdmin,

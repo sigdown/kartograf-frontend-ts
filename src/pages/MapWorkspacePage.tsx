@@ -46,6 +46,7 @@ type MapWorkspacePageProps = {
   setPointFormState: Dispatch<SetStateAction<PointFormState | null>>
   isSubmittingPoint: boolean
   onBackToHome: () => void
+  onRequestAuth: () => void
   onViewportChange: (viewport: ViewportState) => void
   onPointFocusHandled: () => void
   requestPointFocus: (pointKey: string) => void
@@ -86,6 +87,7 @@ export function MapWorkspacePage({
   setPointFormState,
   isSubmittingPoint,
   onBackToHome,
+  onRequestAuth,
   onViewportChange,
   onPointFocusHandled,
   requestPointFocus,
@@ -102,7 +104,6 @@ export function MapWorkspacePage({
   const shellClassName = [
     'app-shell',
     'app-shell--with-header',
-    authSession ? '' : 'app-shell--guest',
     isSidebarOpen ? 'app-shell--sidebar-open' : 'app-shell--sidebar-closed',
     isPointsPanelOpen ? 'app-shell--points-open' : 'app-shell--points-closed',
   ]
@@ -206,24 +207,24 @@ export function MapWorkspacePage({
         Настройки
       </button>
 
-      {authSession ? (
-        <PointsPanel
-          isOpen={isPointsPanelOpen}
-          points={points}
-          activePointId={activePointId}
-          isLoading={isLoadingPoints}
-          error={pointsError}
-          getPointKey={getPointKey}
-          onOpen={() => setIsPointsPanelOpen(true)}
-          onClose={() => setIsPointsPanelOpen(false)}
-          onSelectPoint={(point) => {
-            const pointKey = getPointKey(point)
+      <PointsPanel
+        isOpen={isPointsPanelOpen}
+        isAuthenticated={Boolean(authSession)}
+        points={points}
+        activePointId={activePointId}
+        isLoading={isLoadingPoints}
+        error={pointsError}
+        getPointKey={getPointKey}
+        onOpen={() => setIsPointsPanelOpen(true)}
+        onClose={() => setIsPointsPanelOpen(false)}
+        onRequestAuth={onRequestAuth}
+        onSelectPoint={(point) => {
+          const pointKey = getPointKey(point)
 
-            requestPointFocus(pointKey)
-            setActivePointId(pointKey)
-          }}
-        />
-      ) : null}
+          requestPointFocus(pointKey)
+          setActivePointId(pointKey)
+        }}
+      />
 
       {authSession && pointContextMenu ? (
         <PointContextMenu
